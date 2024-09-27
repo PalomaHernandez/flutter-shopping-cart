@@ -32,18 +32,23 @@ class _CatalogScreenState extends State<CatalogScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Products'),
+        title: const Text(
+          'Products',
+          style: TextStyle(fontSize: 24, fontWeight: FontWeight.w400),
+        ), 
+        elevation: 4,
         actions: [
           IconButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => const CartScreen(),
-                  ),
-                );
-              },
-              icon: const Icon(Icons.shopping_cart_checkout))
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const CartScreen(),
+                ),
+              );
+            },
+            icon:const Icon(Icons.shopping_cart_checkout, size: 30.0),
+          ),
         ],
       ),
       body: RefreshIndicator(

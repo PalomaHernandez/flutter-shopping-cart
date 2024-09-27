@@ -25,9 +25,7 @@ class ProductItem extends StatelessWidget {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(
-          horizontal: 5.0,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 5.0),
         child: Container(
           decoration: BoxDecoration(
             color: Colors.white,
@@ -46,10 +44,7 @@ class ProductItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Padding(
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 5,
-                  vertical: 9,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 9),
                 child: ProductImage(
                   height: 120.0,
                   width: 120.0,
@@ -61,21 +56,28 @@ class ProductItem extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    Text(
-                      '\$${product.price.toStringAsFixed(2)}',
-                      style: theme.textTheme.titleLarge,
-                      textAlign: TextAlign.justify,
+                    Flexible(
+                      child: Text(
+                        product.title,
+                        overflow: TextOverflow.ellipsis,
+                        style: theme.textTheme.titleMedium,
+                      ),
                     ),
-                    Text(
-                      product.title,
-                      overflow: TextOverflow.ellipsis,
-                      style: theme.textTheme.titleMedium,
+                    Flexible(
+                      child: Text(
+                        '\$${product.price.toStringAsFixed(2)}',
+                        style: theme.textTheme.titleLarge,
+                        textAlign: TextAlign.justify,
+                      ),
                     ),
                     IconButton(
                       icon: const Icon(Icons.add_shopping_cart),
                       onPressed: () {
                         context.read<Cart>().addProduct(product);
                         ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor:
+                              const Color.fromARGB(255, 51, 51, 51),
+                          duration: Duration(seconds: 2),
                           content: Text('${product.title} added to cart'),
                         ));
                       },

@@ -9,65 +9,81 @@ class CartScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-
     final cart = context.watch<Cart>();
 
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Your Cart'),
+        title: const Text('Your Cart')
       ),
-      body: ListView.builder(
-        itemCount: cart.cart.length,
-        itemBuilder: (context, index) {
-          final product = cart.cart[index];
-          return ListTile(
-            leading: ProductImage(
-                height: 20.0, width: 50.0, tag: product.id, url: product.image),
-            title: Text(product.title),
-            subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
-            trailing: IconButton(
-              icon: const Icon(Icons.remove_circle),
-              onPressed: () {
-                context.read<Cart>().deleteProduct(product);
-              },
-            ),
-          );
-        },
+      body: Stack(
+        children: [
+          ListView.builder(
+            itemCount: cart.items.length,
+            itemBuilder: (context, index) {
+              final items = cart.items[index];
+              final product = items.keys.first;
+              return ListTile(
+                leading: ProductImage(
+                    height: 50.0,
+                    width: 50.0,
+                    tag: product.id,
+                    url: product.image),
+                title: Text(product.title),
+                subtitle: Text('\$${product.price.toStringAsFixed(2)}'),
+                trailing: Container(
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: const Color.fromARGB(255, 230, 229, 229),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.remove),
+                        onPressed: () {
+                          context.read<Cart>().deleteProduct(product);
+                        },
+                      ),
+                      Text(
+                        '${items[product]}', 
+                        style: TextStyle(fontSize: 20.0),
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.add),
+                        onPressed: () {
+                          context.read<Cart>().addProduct(product);
+                        },
+                      ),
+                    ],
+                  )
+                )
+              );
+            },
+          ),
+        ],
       ),
       bottomNavigationBar: Padding(
         padding: const EdgeInsets.all(16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              // Mostrar el total de la compra
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
-                child: Text(
-                  'Total: \$${cart.totalPrice.toStringAsFixed(2)}',
-                  style: theme.textTheme.headlineLarge,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Total:',
+                  style: theme.textTheme.titleLarge,
                 ),
-              ),
-              // Botón para pagar
-              Padding(
-                padding: const EdgeInsets.only(right: 16.0),
-                child: Container(
-                  height: 50.0,
-                  width: 90.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(5.0),
-                    color: const Color.fromARGB(255, 61, 61, 61), 
-                  ),
-                  child: const Center(
-                    child: Text(
-                      'Check out',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  ),
+                Text(
+                  '\$${cart.totalPrice.toStringAsFixed(2)}',
+                  style: theme.textTheme.titleLarge,
                 ),
-              ),
-            ],
-          ),
-        
+              ],
+            ),
+            const SizedBox(height: 8.0),
+            CustomButton(label: "Check Out", onPressed: () {})
+          ],
+        ),
       ),
     );
   }

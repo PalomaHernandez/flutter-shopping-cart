@@ -17,9 +17,9 @@ class ProductDetailScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Stack(
-          children: [
+        padding: const EdgeInsets.only(bottom: 16, right: 16, left: 16),
+        child: SingleChildScrollView(
+          child:
             Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
@@ -44,47 +44,12 @@ class ProductDetailScreen extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 12),
-                RichText(
-                  text: TextSpan(
-                    text: 'Description: ',
-                    style: theme.textTheme.bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.w500),
-                    children: [
-                      TextSpan(
-                        text: product.description,
-                        style: theme.textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                ),
-                RichText(
-                  text: TextSpan(
-                    text: 'Category: ',
-                    style: theme.textTheme.bodyLarge
-                        ?.copyWith(fontWeight: FontWeight.w500),
-                    children: [
-                      TextSpan(
-                        text: product.category,
-                        style: theme.textTheme.bodyLarge,
-                      ),
-                    ],
-                  ),
-                ),
+                CustomRichText(label: "Description: ", value: product.description),
+                CustomRichText(label: "Category: ", value: product.category),
                 Row(
                   children: [
-                    RichText(
-                      text: TextSpan(
-                        text: 'Rating: ',
-                        style: theme.textTheme.bodyLarge
-                            ?.copyWith(fontWeight: FontWeight.w500),
-                        children: [
-                          TextSpan(
-                            text: product.rating.toString(),
-                            style: theme.textTheme.bodyLarge,
-                          ),
-                        ],
-                      ),
-                    ),
+                    CustomRichText(
+                        label: "Rating: ", value: product.rating.toString()),
                     const Icon(
                       Icons.star,
                       color: Color.fromARGB(255, 231, 217, 92),
@@ -92,37 +57,23 @@ class ProductDetailScreen extends StatelessWidget {
                   ],
                 ),
                 Padding(
-                  padding: const EdgeInsets.all(16.0),
+                  padding: EdgeInsetsDirectional.only(top: 10.0),
                   child: Center(
-                    child: GestureDetector(
-                      onTap: () {
+                    child: CustomButton(
+                      label: "Add to cart",
+                      onPressed: () {
                         context.read<Cart>().addProduct(product);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(
-                          content: Text('${product.title} added to cart'),
-                        )
-                        );
-                      },
-                      child: Container(
-                        width: MediaQuery.of(context).size.width - 50.0,
-                        height: 50.0,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(5.0),
-                          color: const Color.fromARGB(255, 61, 61, 61),
-                        ),
-                        child: const Center(
-                          child: Text(
-                            'Add to cart',
-                            style: TextStyle(color: Colors.white),
-                          ),
-                        ),
-                      ),
-                    ),
+                        ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+                          backgroundColor: const Color.fromARGB(255, 51, 51, 51),
+                          duration: Duration(seconds: 2),
+                          content:
+                              Text('${product.title} added to cart')));
+                      }
+                    )
                   ),
-                )
+                ),
               ],
             ),
-          ],
         ),
       ),
     );
